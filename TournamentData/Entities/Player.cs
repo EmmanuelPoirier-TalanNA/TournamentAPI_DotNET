@@ -1,6 +1,7 @@
+namespace TournamentData.Entities;
 public class Player
 {
-    public int IdPlayer { get; set; }
+    public int Id { get; set; }
     public string Pseudo { get; set; }
 
 }
