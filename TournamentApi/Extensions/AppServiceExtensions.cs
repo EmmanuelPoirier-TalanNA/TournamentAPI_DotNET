@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TournamentBusiness;
 using TournamentData;
 
 public static class AppServiceExtensions
@@ -13,6 +14,7 @@ public static class AppServiceExtensions
             });
 
               services.AddDataServices();
+              services.AddBusinessServices();
             
             return services;
         }

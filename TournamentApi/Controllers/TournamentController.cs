@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TournamentBusiness.PlayerDomain.Business.Interfaces;
+using TournamentBusiness.PlayerDomain.DTOs;
 using TournamentData.Entities;
 using TournamentData.Repositories.Interfaces;
 
@@ -12,11 +14,13 @@ namespace TournamentApi.Controllers
     [Route("api/[controller]")]
     public class TournamentController : ControllerBase
     {
-        private readonly ITournamentRepo _tournamentRepo;
+        private readonly IBSTournament _bsTournament;
+        private readonly ILogger<TournamentController> _logger;
 
-        public TournamentController(ITournamentRepo tournamentRepo)
+        public TournamentController(ILogger<TournamentController> logger, IBSTournament bsTournament)
         {
-            _tournamentRepo = tournamentRepo;
+            _logger = logger;
+            _bsTournament = bsTournament;
         }
 
         [HttpGet(Name = "GetTournaments")]
@@ -24,8 +28,23 @@ namespace TournamentApi.Controllers
         {
             try
             {
-                var tournaments = await _tournamentRepo.GetAllTournaments();
+                var tournaments = await _bsTournament.GetAllTournaments();
                 return Ok(tournaments);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("{id}", Name = "GetTournament")]
+        public async Task<ActionResult<TournamentDto>> Get(int id)
+        {
+            try
+            {
+                var tournament = await _bsTournament.GetTournament(id);
+                return Ok(tournament);
             }
             catch (Exception ex)
             {

@@ -28,6 +28,8 @@ namespace TournamentData.Repositories
         public async Task<Tournament?> GetTournament(int IdTournament)
         {
             return await _db.Tournaments
+            .Include(t => t.Players)
+                .ThenInclude( pt => pt.Player)
             .FirstOrDefaultAsync(t => t.Id == IdTournament);
         }
     }
