@@ -8,7 +8,7 @@ namespace TournamentBusiness.TournamentDomain.DTOs.Extensions
 {
     public static class PlayerTournamentExtension
     {
-        public static List<PlayerTournamentDto> ToPlayerTournamentDto(this IEnumerable<PlayerTournament> players)
+        public static IEnumerable<PlayerTournamentDto> ToPlayerTournamentDto(this IEnumerable<PlayerTournament> players)
         {
             if (players == null || !players.Any())
             {
@@ -19,7 +19,7 @@ namespace TournamentBusiness.TournamentDomain.DTOs.Extensions
                 PlayerId = p.Id,
                 Pseudo = p.Player.Pseudo,
                 Score = p.Score
-            }).ToList();
+            });
         }
     }
 }

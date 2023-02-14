@@ -9,6 +9,7 @@ namespace TournamentData
         public static void AddDataServices(this IServiceCollection services)
         {
             services.AddScoped<ITournamentRepo, TournamentRepo>();
+            services.AddScoped<IPlayerRepo, PlayerRepo>();
         }
     }
 }

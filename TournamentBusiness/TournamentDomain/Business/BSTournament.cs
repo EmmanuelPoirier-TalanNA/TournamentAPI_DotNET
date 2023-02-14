@@ -28,17 +28,17 @@ namespace TournamentBusiness.TournamentDomain.Business
                 throw new ArgumentException("Aucun tournoi n'existe pour cet identifiant");
             }
 
-            var tournamantDto = new TournamentDto
+            var tournamentDto = new TournamentDto
             {
                 Id = tournament.Id,
                 Name = tournament.Name,
-                Players = tournament.Players.ToPlayerTournamentDto()
+                Players = tournament.Players.ToPlayerTournamentDto().ToList()
             };
 
-            return tournamantDto;
+            return tournamentDto;
         }
 
-        public async Task<IList<TournamentDto>> GetAllTournaments()
+        public async Task<IEnumerable<TournamentDto>> GetAllTournaments()
         {
             var tournaments = await _tournamentRepo.GetAllTournaments();
 
@@ -53,7 +53,7 @@ namespace TournamentBusiness.TournamentDomain.Business
             {
                 Id = t.Id,
                 Name = t.Name,
-                Players = t.Players.ToPlayerTournamentDto()
+                Players = t.Players.ToPlayerTournamentDto().ToList()
             }).ToList();
 
             return tournamantDtos;
