@@ -11,6 +11,8 @@ public static class AppServiceExtensions
                 options.UseSqlite("Data Source=..\\TournamentData\\tournament.db");
                 //.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+              services.AddDataServices();
             
             return services;
         }
