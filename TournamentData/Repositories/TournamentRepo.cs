@@ -17,6 +17,12 @@ namespace TournamentData.Repositories
             _db = db;
         }
 
+        public async Task<bool> CreateTournament(Tournament newTournament)
+        {
+             _db.Tournaments.Add(newTournament);
+            return await _db.SaveChangesAsync() > 0;
+        }
+
         public async Task<IList<Tournament>> GetAllTournaments()
         {
             return await _db.Tournaments
@@ -28,6 +34,8 @@ namespace TournamentData.Repositories
         public async Task<Tournament?> GetTournament(int IdTournament)
         {
             return await _db.Tournaments
+            .Include(t => t.Players)
+                .ThenInclude( pt => pt.Player)
             .FirstOrDefaultAsync(t => t.Id == IdTournament);
         }
     }
