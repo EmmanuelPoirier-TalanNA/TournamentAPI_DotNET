@@ -58,5 +58,20 @@ namespace TournamentBusiness.TournamentDomain.Business
 
             return tournamantDtos;
         }
+
+        public async Task<bool> CreateTournament(TournamentCreateDto newTournament)
+        {
+            if (string.IsNullOrEmpty(newTournament.Name))
+            {
+                throw new ArgumentException("Le nom du tournoi est requis");
+            };
+
+            var tournamentEntity = new Tournament()
+            {
+                Name = newTournament.Name,
+                Players = new List<PlayerTournament>()
+            };
+            return await _tournamentRepo.CreateTournament(tournamentEntity);
+        }
     }
 }
