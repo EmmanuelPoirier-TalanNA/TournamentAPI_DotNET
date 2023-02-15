@@ -6,7 +6,7 @@ namespace TournamentBusiness.TournamentDomain.Business.Interfaces
     {
         Task<TournamentDto> GetTournament(int tournamentId);
         Task<IEnumerable<TournamentDto>> GetAllTournaments();
-
-         Task<bool> CreateTournament(TournamentCreateDto newTournament);
+        Task<bool> CreateTournament(TournamentCreateDto newTournament);
+        Task AddPlayers(int tournamentId, IEnumerable<int> playerIds);
     }
 }

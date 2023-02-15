@@ -54,17 +54,33 @@ namespace TournamentApi.Controllers
             }
         }
 
-                [HttpPost( Name = "CreateTournament")]
+        [HttpPost(Name = "CreateTournament")]
         public async Task<ActionResult<bool>> Create([FromBody] TournamentCreateDto tournamentCreate)
         {
             try
             {
-                return Ok( await _bsTournament.CreateTournament(tournamentCreate));
+                return Ok(await _bsTournament.CreateTournament(tournamentCreate));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("{id}/AddPlayers",Name = "AddPlayers")]
+        public async Task<ActionResult> AddPlayers([FromRoute] int id, [FromBody] List<int> playerIds)
+        {
+            try
+            {
+                await _bsTournament.AddPlayers(id, playerIds);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

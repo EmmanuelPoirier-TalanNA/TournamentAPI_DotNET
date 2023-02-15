@@ -13,10 +13,12 @@ namespace TournamentBusiness.TournamentDomain.Business
     public class BSTournament : IBSTournament
     {
         private readonly ITournamentRepo _tournamentRepo;
+        private readonly IPlayerTournamentRepo _playerTournamentRepo;
 
-        public BSTournament(ITournamentRepo tournamentRepo)
+        public BSTournament(ITournamentRepo tournamentRepo, IPlayerTournamentRepo playerTournamentRepo)
         {
             _tournamentRepo = tournamentRepo;
+            _playerTournamentRepo = playerTournamentRepo;
         }
 
         public async Task<TournamentDto> GetTournament(int tournamentId)
@@ -47,16 +49,16 @@ namespace TournamentBusiness.TournamentDomain.Business
                 throw new Exception("Aucun tournoi de disponible");
             }
 
-            var tournamantDtos = new List<TournamentDto>();
+            var tournamentDtos = new List<TournamentDto>();
 
-            tournamantDtos = tournaments.Select(t => new TournamentDto
+            tournamentDtos = tournaments.Select(t => new TournamentDto
             {
                 Id = t.Id,
                 Name = t.Name,
                 Players = t.Players.ToPlayerTournamentDto().ToList()
             }).ToList();
 
-            return tournamantDtos;
+            return tournamentDtos;
         }
 
         public async Task<bool> CreateTournament(TournamentCreateDto newTournament)
@@ -72,6 +74,21 @@ namespace TournamentBusiness.TournamentDomain.Business
                 Players = new List<PlayerTournament>()
             };
             return await _tournamentRepo.CreateTournament(tournamentEntity);
+        }
+
+        public async Task AddPlayers(int IdTournament, IEnumerable<int> playerIds)
+        {
+            var tournament = await _tournamentRepo.GetTournament(IdTournament);
+            if (tournament == null)
+            {
+                throw new Exception("Le tournoi n'existe pas");
+            }
+            var existingPlayerIds = tournament.Players.Select(p => p.PlayerId);
+            var newPlayerIds = playerIds.Where(id => !existingPlayerIds.Contains(id));
+            if (newPlayerIds.Count() > 0)
+            {
+                await _playerTournamentRepo.AddPlayers(IdTournament, newPlayerIds);
+            }
         }
     }
 }

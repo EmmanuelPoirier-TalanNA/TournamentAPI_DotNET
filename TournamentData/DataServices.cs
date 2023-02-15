@@ -10,6 +10,7 @@ namespace TournamentData
         {
             services.AddScoped<ITournamentRepo, TournamentRepo>();
             services.AddScoped<IPlayerRepo, PlayerRepo>();
+            services.AddScoped<IPlayerTournamentRepo, PlayerTournamentRepo>();
         }
     }
 }

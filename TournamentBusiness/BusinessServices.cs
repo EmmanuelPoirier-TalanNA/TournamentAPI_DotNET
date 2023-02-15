@@ -11,9 +11,8 @@ namespace TournamentBusiness
     {
            public static void AddBusinessServices(this IServiceCollection services)
         {
-           services.AddScoped<TournamentDomain.Business.Interfaces.IBSTournament, BSTournament>();
-           services.AddScoped<PlayerDomain.Business.Interfaces.IBSPlayer, BSPlayer>();
-       
+           services.AddScoped<IBSTournament, BSTournament>();
+           services.AddScoped<IBSPlayer, BSPlayer>();       
         }
         
     }
