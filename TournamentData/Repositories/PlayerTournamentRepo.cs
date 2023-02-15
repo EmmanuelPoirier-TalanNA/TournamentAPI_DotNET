@@ -27,7 +27,8 @@ namespace TournamentData.Repositories
                 throw new ArgumentException("Le tournoi n'existe pas");
             };
 
-            if (tournament.Players == null) { 
+            if (tournament.Players == null)
+            {
                 tournament.Players = new List<PlayerTournament>();
             }
 
@@ -45,7 +46,24 @@ namespace TournamentData.Repositories
         public async Task<IList<PlayerTournament>> GetAll()
         {
             return await _db.PlayerTournaments
-            .ToListAsync();
+                .ToListAsync();
+        }
+
+        public async Task<PlayerTournament?> Get(int tournamentId, int playerId)
+        {
+            return await _db.PlayerTournaments
+                .FirstOrDefaultAsync(pt => pt.TournamentId == tournamentId && pt.PlayerId == playerId);
+        }
+
+        public async Task AddPoints(int tournamentId, int playerId, int points)
+        {
+            var playerTournament = await _db.PlayerTournaments
+                .FirstOrDefaultAsync(pt => pt.TournamentId == tournamentId && pt.PlayerId == playerId);
+            if (playerTournament != null)
+            {
+                playerTournament.Score += points;
+                await _db.SaveChangesAsync();
+            }
         }
     }
 }

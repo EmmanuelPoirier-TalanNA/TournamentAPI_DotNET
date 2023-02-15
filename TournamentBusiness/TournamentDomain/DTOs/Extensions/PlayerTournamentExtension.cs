@@ -16,7 +16,7 @@ namespace TournamentBusiness.TournamentDomain.DTOs.Extensions
             }
             return players.Select(p => new PlayerTournamentDto
             {
-                PlayerId = p.Id,
+                PlayerId = p.PlayerId,
                 Pseudo = p.Player.Pseudo,
                 Score = p.Score
             });

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using TournamentBusiness.TournamentDomain.Business.Interfaces;
 using TournamentBusiness.TournamentDomain.DTOs;
 using TournamentBusiness.TournamentDomain.DTOs.Extensions;
@@ -21,13 +22,18 @@ namespace TournamentBusiness.TournamentDomain.Business
             _playerTournamentRepo = playerTournamentRepo;
         }
 
-        public async Task<TournamentDto> GetTournament(int tournamentId)
+        public async Task<TournamentDto> GetTournament(int tournamentId, bool sortedByScore = false)
         {
             var tournament = await _tournamentRepo.GetTournament(tournamentId);
 
             if (tournament == null)
             {
                 throw new ArgumentException("Aucun tournoi n'existe pour cet identifiant");
+            }
+
+            if (sortedByScore)
+            {
+                tournament.Players = tournament.Players.OrderByDescending(p => p.Score).ToList();
             }
 
             var tournamentDto = new TournamentDto
@@ -76,9 +82,9 @@ namespace TournamentBusiness.TournamentDomain.Business
             return await _tournamentRepo.CreateTournament(tournamentEntity);
         }
 
-        public async Task AddPlayers(int TournamentId, IEnumerable<int> playerIds)
+        public async Task AddPlayers(int tournamentId, IEnumerable<int> playerIds)
         {
-            var tournament = await _tournamentRepo.GetTournament(TournamentId);
+            var tournament = await _tournamentRepo.GetTournament(tournamentId);
             if (tournament == null)
             {
                 throw new Exception("Le tournoi n'existe pas");
@@ -87,18 +93,33 @@ namespace TournamentBusiness.TournamentDomain.Business
             var newPlayerIds = playerIds.Where(id => !existingPlayerIds.Contains(id));
             if (newPlayerIds.Count() > 0)
             {
-                await _playerTournamentRepo.AddPlayers(TournamentId, newPlayerIds);
+                await _playerTournamentRepo.AddPlayers(tournamentId, newPlayerIds);
             }
         }
 
-        public async Task CloseTournament(int TournamentId)
+        public async Task CloseTournament(int tournamentId)
         {
-            if (await _tournamentRepo.Exists(TournamentId))
+            await CheckTournament(tournamentId);
+            await _tournamentRepo.Close(tournamentId);
+        }
+
+        public async Task Addpoints(int tournamentId, AddPointsDto addPointsDto)
+        {
+            await CheckTournament(tournamentId);
+            var playerTournament = await _playerTournamentRepo.Get(tournamentId, addPointsDto.PlayerId);
+            if (playerTournament == null)
+            {
+                throw new ArgumentException("Le joueur n'existe pas pour ce tournoi");
+            }
+            await _playerTournamentRepo.AddPoints(tournamentId, addPointsDto.PlayerId, addPointsDto.PointsAdded);
+        }
+
+        private async Task CheckTournament(int tournamentId)
+        {
+            if (!await _tournamentRepo.Exists(tournamentId))
             {
                 throw new Exception("Le tournoi n'existe pas");
             }
-
-            await _tournamentRepo.Close(TournamentId);
         }
     }
 }

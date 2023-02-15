@@ -39,13 +39,18 @@ namespace TournamentApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpGet("{id}", Name = "GetTournament")]
-        public async Task<ActionResult<TournamentDto>> Get(int id)
+       /// <summary>
+        /// Obtient les données d'un tournoi
+        /// </summary>
+        /// <param name="tournamentId">L'identifiant du tournoi</param>
+        /// <param name="sortedByScore">Booléen indiquant si on tri les joueurs sur leur score (descendant)</param>
+        /// <returns>Une réponse HTTP 200</returns>
+        [HttpGet("{tournamentId}", Name = "GetTournament")]
+        public async Task<ActionResult<TournamentDto>> Get(int tournamentId, [FromQuery] bool sortedByScore = false)
         {
             try
             {
-                var tournament = await _bsTournament.GetTournament(id);
+                var tournament = await _bsTournament.GetTournament(tournamentId, sortedByScore);
                 return Ok(tournament);
             }
             catch (Exception ex)
@@ -97,6 +102,26 @@ namespace TournamentApi.Controllers
             try
             {
                 await _bsTournament.CloseTournament(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Ajoute une nombre de points à un joueur pour un tournoi
+        /// </summary>
+        /// <param name="tournamentId">L'identifiant du tournoi</param>
+        /// <param name="addPointsDto">L'objet contenant l'identifiant du joueur et les points ajoutés</param>
+        /// <returns>Une réponse HTTP 200</returns>
+        [HttpPut("{tournamentId}/AddPoints", Name = "AddPointsToPlayer")]
+        public async Task<ActionResult> AddPointsToPlayer([FromRoute] int tournamentId, [FromBody] AddPointsDto addPointsDto)
+        {
+            try
+            {
+                await _bsTournament.Addpoints(tournamentId, addPointsDto);
                 return Ok();
             }
             catch (Exception ex)
