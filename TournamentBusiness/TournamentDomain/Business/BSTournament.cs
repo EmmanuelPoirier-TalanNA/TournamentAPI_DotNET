@@ -76,9 +76,9 @@ namespace TournamentBusiness.TournamentDomain.Business
             return await _tournamentRepo.CreateTournament(tournamentEntity);
         }
 
-        public async Task AddPlayers(int IdTournament, IEnumerable<int> playerIds)
+        public async Task AddPlayers(int TournamentId, IEnumerable<int> playerIds)
         {
-            var tournament = await _tournamentRepo.GetTournament(IdTournament);
+            var tournament = await _tournamentRepo.GetTournament(TournamentId);
             if (tournament == null)
             {
                 throw new Exception("Le tournoi n'existe pas");
@@ -87,8 +87,18 @@ namespace TournamentBusiness.TournamentDomain.Business
             var newPlayerIds = playerIds.Where(id => !existingPlayerIds.Contains(id));
             if (newPlayerIds.Count() > 0)
             {
-                await _playerTournamentRepo.AddPlayers(IdTournament, newPlayerIds);
+                await _playerTournamentRepo.AddPlayers(TournamentId, newPlayerIds);
             }
+        }
+
+        public async Task CloseTournament(int TournamentId)
+        {
+            if (await _tournamentRepo.Exists(TournamentId))
+            {
+                throw new Exception("Le tournoi n'existe pas");
+            }
+
+            await _tournamentRepo.Close(TournamentId);
         }
     }
 }

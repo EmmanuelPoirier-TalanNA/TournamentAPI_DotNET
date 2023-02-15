@@ -17,17 +17,33 @@ namespace TournamentData.Repositories
             _db = db;
         }
 
+        public async Task<bool> Close(int IdTournament)
+        {
+            var tournament = await _db.Tournaments.FirstOrDefaultAsync(t => t.Id == IdTournament);
+            if (tournament == null)
+            {
+                return false;
+            }
+            tournament.Closed = true;
+            return await _db.SaveChangesAsync() > 0;
+        }
+
         public async Task<bool> CreateTournament(Tournament newTournament)
         {
-             _db.Tournaments.Add(newTournament);
+            _db.Tournaments.Add(newTournament);
             return await _db.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> Exists(int IdTournament)
+        {
+            return await _db.Tournaments.FirstOrDefaultAsync(t => t.Id == IdTournament) != null;
         }
 
         public async Task<IList<Tournament>> GetAllTournaments()
         {
             return await _db.Tournaments
             .Include(t => t.Players)
-                .ThenInclude( pt => pt.Player)
+                .ThenInclude(pt => pt.Player)
             .ToListAsync();
         }
 
@@ -35,7 +51,7 @@ namespace TournamentData.Repositories
         {
             return await _db.Tournaments
             .Include(t => t.Players)
-                .ThenInclude( pt => pt.Player)
+                .ThenInclude(pt => pt.Player)
             .FirstOrDefaultAsync(t => t.Id == IdTournament);
         }
     }
