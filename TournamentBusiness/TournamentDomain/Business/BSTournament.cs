@@ -61,6 +61,7 @@ namespace TournamentBusiness.TournamentDomain.Business
             {
                 Id = t.Id,
                 Name = t.Name,
+                Closed = t.Closed,
                 Players = t.Players.ToPlayerTournamentDto().ToList()
             }).ToList();
 

@@ -9,6 +9,7 @@ namespace TournamentBusiness.TournamentDomain.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Closed { get; set; }
         public virtual ICollection<PlayerTournamentDto> Players { get; set; }
     }
 }
