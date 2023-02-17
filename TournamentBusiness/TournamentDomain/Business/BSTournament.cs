@@ -98,10 +98,10 @@ namespace TournamentBusiness.TournamentDomain.Business
             }
         }
 
-        public async Task CloseTournament(int tournamentId)
+        public async Task CloseTournament(int tournamentId, bool close)
         {
             await CheckTournament(tournamentId);
-            await _tournamentRepo.Close(tournamentId);
+            await _tournamentRepo.Close(tournamentId, close);
         }
 
         public async Task Addpoints(int tournamentId, AddPointsDto addPointsDto)

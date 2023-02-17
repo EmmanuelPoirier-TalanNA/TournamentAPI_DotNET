@@ -12,6 +12,6 @@ namespace TournamentData.Repositories.Interfaces
         Task<IList<Tournament>> GetAllTournaments();
         Task<bool> CreateTournament(Tournament newTournament);
         Task<bool> Exists(int IdTournament);
-        Task<bool> Close(int IdTournament);
+        Task<bool> Close(int IdTournament, bool close);
     }
 }

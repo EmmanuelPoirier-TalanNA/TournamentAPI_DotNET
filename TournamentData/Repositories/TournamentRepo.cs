@@ -17,14 +17,14 @@ namespace TournamentData.Repositories
             _db = db;
         }
 
-        public async Task<bool> Close(int IdTournament)
+        public async Task<bool> Close(int IdTournament, bool close)
         {
             var tournament = await _db.Tournaments.FirstOrDefaultAsync(t => t.Id == IdTournament);
             if (tournament == null)
             {
                 return false;
             }
-            tournament.Closed = true;
+            tournament.Closed = close;
             return await _db.SaveChangesAsync() > 0;
         }
 

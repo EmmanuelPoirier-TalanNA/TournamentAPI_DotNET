@@ -91,17 +91,18 @@ namespace TournamentApi.Controllers
         /// Permet de cloturer un tournoi
         /// </summary>
         /// <param name="id">L'identifiant du tournoi</param>
+        /// <param name="close">Booleen pour indiquer l'état du tournoi</param>
         /// <response code="200">Success / Succès de la requête</response>
         /// <response code="400">Bad request / La syntaxe de la requête est erronée</response>
         /// <response code="403">Forbidden / Accès refusé:  les droits d'accès ne permettent pas au client d'accéder à la ressource</response>
         /// <response code="500">Internal Server Error / Erreur interne du serveur</response>
         /// <returns>Une réponse HTTP 200</returns>
         [HttpPut("{id}/Close", Name = "CloseTournament")]
-        public async Task<ActionResult> CloseTournament([FromRoute] int id)
+        public async Task<ActionResult> CloseTournament([FromRoute] int id, [FromBody] bool close = false)
         {
             try
             {
-                await _bsTournament.CloseTournament(id);
+                await _bsTournament.CloseTournament(id, close);
                 return Ok();
             }
             catch (Exception ex)

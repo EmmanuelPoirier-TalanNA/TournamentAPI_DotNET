@@ -8,7 +8,7 @@ namespace TournamentBusiness.TournamentDomain.Business.Interfaces
         Task<IEnumerable<TournamentDto>> GetAllTournaments();
         Task<bool> CreateTournament(TournamentCreateDto newTournament);
         Task AddPlayers(int tournamentId, IEnumerable<int> playerIds);
-        Task CloseTournament(int tournamentId);
+        Task CloseTournament(int tournamentId, bool close);
         Task Addpoints(int tournamentId, AddPointsDto addPointsDto);
     }
 }
