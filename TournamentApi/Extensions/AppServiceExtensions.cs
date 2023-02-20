@@ -10,7 +10,7 @@ public static class AppServiceExtensions
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlite("Data Source=..\\TournamentData\\tournament.db");
-                //.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
 
               services.AddDataServices();
