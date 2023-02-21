@@ -40,6 +40,7 @@ namespace TournamentBusiness.AccountDomain.Business
 
             return new PlayerDto
             {
+                PlayerId = player.Id,
                 Pseudo = player.Pseudo,
                 Token = _bsToken.CreateToken(player)
             };
@@ -62,6 +63,7 @@ namespace TournamentBusiness.AccountDomain.Business
 
             return new PlayerDto
             {
+                PlayerId = player.Id,
                 Pseudo = player.Pseudo,
                 Token = _bsToken.CreateToken(player)
             };
