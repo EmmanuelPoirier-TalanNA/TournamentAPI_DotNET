@@ -39,7 +39,7 @@ namespace TournamentApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-       /// <summary>
+        /// <summary>
         /// Obtient les données d'un tournoi
         /// </summary>
         /// <param name="tournamentId">L'identifiant du tournoi</param>

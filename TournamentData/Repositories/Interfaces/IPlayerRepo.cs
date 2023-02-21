@@ -9,5 +9,7 @@ namespace TournamentData.Repositories.Interfaces
     public interface IPlayerRepo
     {
         Task<bool> CreatePlayer(Player newPlayer);
+        Task<bool> PlayerExists(string email);
+        Task<Player> GetPlayerByEmail(string email);
     }
 }
