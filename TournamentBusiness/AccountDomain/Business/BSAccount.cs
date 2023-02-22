@@ -42,6 +42,7 @@ namespace TournamentBusiness.AccountDomain.Business
             {
                 PlayerId = player.Id,
                 Pseudo = player.Pseudo,
+                 Role = player.Role,
                 Token = _bsToken.CreateToken(player)
             };
         }
@@ -56,7 +57,8 @@ namespace TournamentBusiness.AccountDomain.Business
                 Email = registerDto.Email.ToLower(),
                 Pseudo = registerDto.Pseudo,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
+                PasswordSalt = hmac.Key,
+                Role = Role.Player // default                
             };
 
             await _playerRepo.CreatePlayer(player);
@@ -65,8 +67,13 @@ namespace TournamentBusiness.AccountDomain.Business
             {
                 PlayerId = player.Id,
                 Pseudo = player.Pseudo,
+                Role = player.Role,
                 Token = _bsToken.CreateToken(player)
             };
+        }
+
+        public async Task<Player> GetById(int playerId) {
+            return await _playerRepo.GetPlayerById(playerId);
         }
     }
 }

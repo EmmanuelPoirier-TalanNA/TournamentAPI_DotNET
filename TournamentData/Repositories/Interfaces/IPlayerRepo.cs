@@ -11,5 +11,6 @@ namespace TournamentData.Repositories.Interfaces
         Task<bool> CreatePlayer(Player newPlayer);
         Task<bool> PlayerExists(string email);
         Task<Player> GetPlayerByEmail(string email);
+        Task<Player> GetPlayerById(int playerId);
     }
 }

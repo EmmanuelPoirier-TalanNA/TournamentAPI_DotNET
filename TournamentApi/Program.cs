@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using TournamentApi.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddCors();
 builder.Services.AddControllers().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+{
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,6 +33,9 @@ app.UseCors(builder => builder
     .AllowAnyMethod()
     .AllowCredentials()
     .WithOrigins("http://localhost:4200"));
+
+       // custom jwt auth middleware
+    app.UseMiddleware<JwtMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

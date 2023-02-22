@@ -34,5 +34,11 @@ namespace TournamentData.Repositories
             return await _db.Players
                 .FirstOrDefaultAsync(p => p.Email == email);
         }
+
+        public async Task<Player> GetPlayerById(int playerId)
+        {
+            return await _db.Players
+                .FirstOrDefaultAsync(p => p.Id == playerId);
+        }
     }
 }

@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using TournamentBusiness.TournamentDomain.Business.Interfaces;
 using TournamentBusiness.TournamentDomain.DTOs;
 using TournamentData.Entities;
-using TournamentData.Repositories.Interfaces;
+using AllowAnonymousAttribute = TournamentApi.Authorization.AllowAnonymousAttribute;
+using AuthorizeAttribute = TournamentApi.Authorization.AuthorizeAttribute;
 
 namespace TournamentApi.Controllers
 {
+    [Authorize]
     [ApiController]
-    [AllowAnonymous]
     [Route("api/[controller]")]
     public class TournamentController : ControllerBase
     {
@@ -25,7 +20,7 @@ namespace TournamentApi.Controllers
             _logger = logger;
             _bsTournament = bsTournament;
         }
-
+        [AllowAnonymous]
         [HttpGet(Name = "GetTournaments")]
         public async Task<ActionResult<IEnumerable<Tournament>>> GetAll()
         {
@@ -45,6 +40,7 @@ namespace TournamentApi.Controllers
         /// <param name="tournamentId">L'identifiant du tournoi</param>
         /// <param name="sortedByScore">Booléen indiquant si on tri les joueurs sur leur score (descendant)</param>
         /// <returns>Une réponse HTTP 200</returns>
+        [AllowAnonymous]
         [HttpGet("{tournamentId}", Name = "GetTournament")]
         public async Task<ActionResult<TournamentDto>> Get(int tournamentId, [FromQuery] bool sortedByScore = false)
         {

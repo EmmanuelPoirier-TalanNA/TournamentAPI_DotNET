@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TournamentBusiness.AccountDomain.DTOs;
+using TournamentData.Entities;
 
 namespace TournamentBusiness.AccountDomain.Business.Interface
 {
@@ -10,5 +11,6 @@ namespace TournamentBusiness.AccountDomain.Business.Interface
     {
           Task<PlayerDto> Register(RegisterDto registerDto);
           Task<PlayerDto> Login(LoginDto loginDto);
+          Task<Player> GetById(int playerId);
     }
 }

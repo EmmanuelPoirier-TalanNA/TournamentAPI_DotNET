@@ -6,6 +6,7 @@ public class Player
     public string Email { get; set; }
     public byte[] PasswordHash { get; set; }
     public byte[] PasswordSalt { get; set; }
+    public Role Role { get; set; }
     public virtual ICollection<PlayerTournament> Tournaments { get; set; }
 
 }
