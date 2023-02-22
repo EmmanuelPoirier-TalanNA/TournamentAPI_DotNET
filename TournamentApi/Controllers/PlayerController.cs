@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TournamentBusiness.AccountDomain.DTOs;
 using TournamentBusiness.PlayerDomain.Business.Interfaces;
 using TournamentBusiness.PlayerDomain.DTOs.Extensions;
 using TournamentBusiness.TournamentDomain.Business.Interfaces;
@@ -33,6 +34,20 @@ namespace TournamentApi.Controllers
             try
             {
                 return Ok(await _bsPlayer.CreatePlayer(playerCreate));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet(Name = "GetPlayers")]
+        public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll()
+        {
+            try
+            {
+                var players = await _bsPlayer.GetAllPlayers();
+                return Ok(players);
             }
             catch (Exception ex)
             {

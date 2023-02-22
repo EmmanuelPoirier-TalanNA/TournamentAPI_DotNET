@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TournamentBusiness.AccountDomain.DTOs;
 using TournamentBusiness.PlayerDomain.Business.Interfaces;
 using TournamentBusiness.PlayerDomain.DTOs.Extensions;
 using TournamentData.Entities;
@@ -30,6 +31,15 @@ namespace TournamentBusiness.PlayerDomain.Business
                 Pseudo = newPlayer.Pseudo,
             };
             return await _playertRepo.CreatePlayer(playerEntity);
+        }
+
+        public async Task<IEnumerable<PlayerDto>> GetAllPlayers()
+        {
+
+            return (await _playertRepo.GetAll()).Select(p =>
+            {
+                return new PlayerDto { PlayerId = p.Id, Pseudo = p.Pseudo, Role = p.Role };
+            });
         }
     }
 }

@@ -24,8 +24,6 @@ namespace TournamentData.Repositories
 
         public async Task<bool> PlayerExists(string email)
         {
-            var player = await _db.Players.FirstOrDefaultAsync(p => p.Email == email.ToLower());
-            var test = await _db.Players.AnyAsync(p => p.Email == email.ToLower());
             return await _db.Players.AnyAsync(p => p.Email == email.ToLower());
         }
 
@@ -39,6 +37,11 @@ namespace TournamentData.Repositories
         {
             return await _db.Players
                 .FirstOrDefaultAsync(p => p.Id == playerId);
+        }
+
+        public async Task<IEnumerable<Player>> GetAll()
+        {
+            return await _db.Players.ToListAsync();
         }
     }
 }
