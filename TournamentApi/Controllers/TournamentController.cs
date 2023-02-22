@@ -126,7 +126,5 @@ namespace TournamentApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
 }

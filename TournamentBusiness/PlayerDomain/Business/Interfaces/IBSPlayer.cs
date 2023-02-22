@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TournamentBusiness.AccountDomain.DTOs;
-using TournamentBusiness.PlayerDomain.DTOs.Extensions;
+using TournamentBusiness.PlayerDomain.DTOs;
+
 
 namespace TournamentBusiness.PlayerDomain.Business.Interfaces
 {
     public interface IBSPlayer
     {
-        Task<bool> CreatePlayer(PlayerCreateDto newPlayer);
-         Task<IEnumerable<PlayerDto>> GetAllPlayers();
+        Task<IEnumerable<PlayerDto>> GetAllPlayers();
+        Task<PlayerFullDto> GetPlayerFullById(int playerId);
     }
 }

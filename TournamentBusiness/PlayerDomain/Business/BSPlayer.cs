@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TournamentBusiness.AccountDomain.DTOs;
 using TournamentBusiness.PlayerDomain.Business.Interfaces;
+using TournamentBusiness.PlayerDomain.DTOs;
 using TournamentBusiness.PlayerDomain.DTOs.Extensions;
-using TournamentData.Entities;
 using TournamentData.Repositories.Interfaces;
 
 namespace TournamentBusiness.PlayerDomain.Business
@@ -19,20 +15,6 @@ namespace TournamentBusiness.PlayerDomain.Business
             _playertRepo = playertRepo;
         }
 
-        public async Task<bool> CreatePlayer(PlayerCreateDto newPlayer)
-        {
-            if (string.IsNullOrEmpty(newPlayer.Pseudo))
-            {
-                throw new ArgumentException("Le nom du joueur est requis");
-            };
-
-            var playerEntity = new Player()
-            {
-                Pseudo = newPlayer.Pseudo,
-            };
-            return await _playertRepo.CreatePlayer(playerEntity);
-        }
-
         public async Task<IEnumerable<PlayerDto>> GetAllPlayers()
         {
 
@@ -40,6 +22,17 @@ namespace TournamentBusiness.PlayerDomain.Business
             {
                 return new PlayerDto { PlayerId = p.Id, Pseudo = p.Pseudo, Role = p.Role };
             });
+        }
+
+        public async Task<PlayerFullDto> GetPlayerFullById(int playerId)
+        {
+            var player = await _playertRepo.GetPlayerById(playerId);
+           if (player == null)
+            {
+                throw new ArgumentException("Aucun joueur n'existe avec cet identifiant");
+            }
+            return player.ToPlayerFullDto();
+
         }
     }
 }

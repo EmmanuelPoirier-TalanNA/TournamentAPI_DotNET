@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TournamentBusiness.AccountDomain.DTOs;
 using TournamentBusiness.PlayerDomain.Business.Interfaces;
-using TournamentBusiness.PlayerDomain.DTOs.Extensions;
-using TournamentBusiness.TournamentDomain.Business.Interfaces;
-using TournamentBusiness.TournamentDomain.DTOs;
-using TournamentData.Entities;
-using TournamentData.Repositories.Interfaces;
+using TournamentBusiness.PlayerDomain.DTOs;
 
 namespace TournamentApi.Controllers
 {
@@ -28,19 +20,6 @@ namespace TournamentApi.Controllers
             _bsPlayer = bsPlayer;
         }
 
-        [HttpPost(Name = "CreatePlayer")]
-        public async Task<ActionResult<bool>> Create([FromBody] PlayerCreateDto playerCreate)
-        {
-            try
-            {
-                return Ok(await _bsPlayer.CreatePlayer(playerCreate));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpGet(Name = "GetPlayers")]
         public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll()
         {
@@ -48,6 +27,26 @@ namespace TournamentApi.Controllers
             {
                 var players = await _bsPlayer.GetAllPlayers();
                 return Ok(players);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Obtient les données d'un joueur
+        /// </summary>
+        /// <param name="playerId">L'identifiant du joueur</param>
+        /// <returns>Une réponse HTTP 200</returns>
+        [AllowAnonymous]
+        [HttpGet("{playerId}", Name = "GetPlayerFull")]
+        public async Task<ActionResult<PlayerFullDto>> GetPlayerFull(int playerId)
+        {
+            try
+            {
+                var player = await _bsPlayer.GetPlayerFullById(playerId);
+                return Ok(player);
             }
             catch (Exception ex)
             {
