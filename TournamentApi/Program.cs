@@ -1,6 +1,8 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using TournamentApi.Authorization;
+using TournamentData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,5 +54,17 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<DataContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+        await Seed.SeedPlayers(context);
+    }
+}
 
 app.Run();
