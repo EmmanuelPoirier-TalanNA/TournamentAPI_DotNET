@@ -8,7 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddCors();
+builder.Services.AddCors(c =>
+{
+    c.AddPolicy("AllowOrigin", options =>
+    {
+        options
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .WithOrigins("http://localhost:4200");        
+    });
+});
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -30,26 +40,27 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseCors(builder => builder
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials()
-    .WithOrigins("http://localhost:4200"));
+//app.UseCors(builder => builder
+//    .AllowAnyHeader()
+//    .AllowAnyMethod()
+//    .AllowCredentials()
+//    .WithOrigins("http://localhost:4200"));
+app.UseCors("AllowOrigin");
 
-       // custom jwt auth middleware
-    app.UseMiddleware<JwtMiddleware>();
+// custom jwt auth middleware
+app.UseMiddleware<JwtMiddleware>();
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI(options =>
  {
      options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
      options.RoutePrefix = string.Empty;
  });
-}
+//}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

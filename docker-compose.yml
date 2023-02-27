@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  tournamentapi:
+    image: ${DOCKER_REGISTRY-}tournamentwebapi
+    build:
+      context: .
+      dockerfile: TournamentApi/Dockerfile
+    ports:
+      - "5062:80"
+  webapp:
+    image: ${DOCKER_REGISTRY-}tournamantwebapp:v1
+    build:
+      context: ../TournamentAppNG
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
