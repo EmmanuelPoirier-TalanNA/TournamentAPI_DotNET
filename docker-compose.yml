@@ -6,8 +6,12 @@ services:
     build:
       context: .
       dockerfile: TournamentApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5062:80"
+    volumes:
+      - "./TournamentData/tournament.db:/TournamentData/tournament.db"
   webapp:
     image: ${DOCKER_REGISTRY-}tournamantwebapp:v1
     build:
@@ -15,3 +19,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - "4200:80"
+
+
