@@ -9,9 +9,12 @@ public static class AppServiceExtensions
            
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlite("Data Source=..\\TournamentData\\tournament.db");
+                //options.UseSqlite("Data Source=..\\TournamentData\\tournament.db");
                 //options.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                
             });
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
               services.AddDataServices();
               services.AddBusinessServices();
