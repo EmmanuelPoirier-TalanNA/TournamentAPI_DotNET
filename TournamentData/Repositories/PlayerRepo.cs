@@ -46,5 +46,16 @@ namespace TournamentData.Repositories
         {
             return await _db.Players.ToListAsync();
         }
+
+        public async Task<bool> UpdateRole(int playerId, Role role)
+        {
+            var player = await _db.Players.FirstOrDefaultAsync(p => p.Id == playerId);
+            if (player != null)
+            {
+                player.Role = role;
+                return await _db.SaveChangesAsync() > 0;
+            }
+            return false;
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace TournamentData.Repositories.Interfaces
         Task<Player> GetPlayerByEmail(string email);
         Task<Player> GetPlayerById(int playerId);
         Task<IEnumerable<Player>> GetAll();
+        Task<bool> UpdateRole(int playerId, Role role);
     }
 }

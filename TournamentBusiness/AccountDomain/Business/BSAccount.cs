@@ -75,5 +75,6 @@ namespace TournamentBusiness.AccountDomain.Business
         public async Task<Player> GetById(int playerId) {
             return await _playerRepo.GetPlayerById(playerId);
         }
+
     }
 }

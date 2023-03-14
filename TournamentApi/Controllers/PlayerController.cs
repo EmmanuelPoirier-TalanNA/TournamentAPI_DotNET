@@ -53,5 +53,25 @@ namespace TournamentApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        
+        /// <summary>
+        /// Modifie le role d'un compte joueur
+        /// </summary>
+        /// <param name="updateRoleDto">L'identifiant du joueur + le role à mettre à jour</param>
+        /// <returns>Une réponse HTTP 200</returns>
+        [HttpPost("UpdateRole")]
+        public async Task<ActionResult<bool>> UpdateRole([FromBody] UpdateRoleDto updateRoleDto)
+        {
+            try
+            {
+                var res = await _bsPlayer.UpdateRole(updateRoleDto);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

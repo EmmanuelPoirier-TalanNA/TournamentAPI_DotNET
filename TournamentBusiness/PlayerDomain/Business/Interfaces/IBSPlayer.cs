@@ -8,5 +8,7 @@ namespace TournamentBusiness.PlayerDomain.Business.Interfaces
     {
         Task<IEnumerable<PlayerDto>> GetAllPlayers();
         Task<PlayerFullDto> GetPlayerFullById(int playerId);
+        
+          Task<bool> UpdateRole(UpdateRoleDto updateRoleDto);
     }
 }
