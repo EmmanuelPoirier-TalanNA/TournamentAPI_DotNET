@@ -22,12 +22,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5062:80"
+
     # volumes:
     #   - "./TournamentData/tournament.db:/TournamentData/tournament.db"
     depends_on:
       - sql_server2022
-
-
   webapp:
     image: ${DOCKER_REGISTRY-}tournamentwebapp:v1
     build:
@@ -35,3 +34,4 @@ services:
       dockerfile: Dockerfile
     ports:
       - "4200:80"
+
